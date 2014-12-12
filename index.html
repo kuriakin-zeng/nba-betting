@@ -8,6 +8,11 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/highcharts-more.js"></script>
+    <script type="text/javascript" src="javascripts/main.js"></script>
 
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +25,7 @@
     <header>
       <div class="inner">
         <h1>Against All Odds: An Examination of Bias in Sports Betting</h1>
-        <h2></h2>
+        <h2>Benjamin Sun, Howard Zhang, Kuriakin Zeng, and Peter Bang</h2>
         <a href="https://github.com/pbang55/nba-betting" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
@@ -28,37 +33,21 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <h3>
-<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<h3>Background</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>All of us in the group are avid sports fans, and we would like to explore the sports betting market to see if it is efficient, or if there is an opportunity to profit from betting in a certain pattern consistently. It’s a market that is oftentimes invisible, but a fascinating one nonetheless. According to ESPN, “more than $3.6 billion was wagered on sports at Nevada sports books in 2013” while estimates for illegal betting tops $380 billion. This topic is especially of interest after recent pushes for legalization in the US, which is currently only legal in Nevada and through offshore websites. Recent supporters include Adam Silver, the commissioner of the NBA, calling for the federal legalization of sports betting in the US as a common sense solution given the amount of illicit betting already at play and the potential for sports betting as a budgetary aid. This stands in contrast to similar systems in Europe, where sports betting in legal and volumes are significantly higher than comparable sports in the U.S.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p>Given the potential of sports betting in the U.S. and our collective interest in the topic, we want to explore the relationship between the structures and incentives of sports betting markets, comparing the efficiency of this market relative to financial markets, and observe where inefficiencies might arise. One piece of research of particular interest to us were the studies of Steven Levitt, who argues in a 2004 paper that bookmakers “do not play the traditional role of market makers matching buyers and sellers but, rather, take large positions with respect to the outcome of game” and bias the odds against favorites. In our project, we want to dive deeper into this hypothesis as well as take a look at what other factors might come into play regarding systematic over/undervaluation in placing odds in the world of sports betting.</p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<div id="nbaWPSChart"></div>
 
-<h3>
-<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>As seen above, I show the means of the binary indicator, WPS, by year. For each game, WPS indicates whether the actual spread from the favorite's perspective beat the predicted spread. The bars represent the 95% confidence interval assuming a Student's t-distribution. As the number of observations is very large each year (with over 1200 total matches in the regular season), then by the central limit theorem the means should be normally distributed, allowing us to use the Student's t-distribution.</p>
+<p>As seen, the mean of WPS for each year is not statistically significant from 0.5 for most of the years between 2000 to 2013. This suggests that betting odds are good predictors of the actual result as 50% of the time the spread is greater then predicted and 50% of the time it is less.</p>
+<p>Interestingly, the mean values of WPS before 2011 seem to be below the 50% mark, suggesting that betting odds odds are biased against the favorites. In other words, they underpredict the probably of the favorite winning. This makes sense and is consistent with the literature (http://fivethirtyeight.com/features/why-people-bet-on-the-favorite-even-when-the-spread-favors-the-underdog/). There is a tendency for people to place their bets on the favorite team (perhaps for psychological reasons), which means that the gambling companies can increase the point spread, making it harder for the favorite to beat and thus shifting the odds slightly to favor the underdog. Nevertheless, the results are not statistically significance at the 10% level except for in the years 1994, 2006, and 2010.</p>
 
-<h3>
-<a id="rather-drive-stick" class="anchor" href="#rather-drive-stick" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<div id="nbaBoxPlot"></div>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="https://help.github.com/pages">https://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
         </section>
 
         <aside id="sidebar">
@@ -77,7 +66,6 @@ $ git checkout gh-pages
         </aside>
       </div>
     </div>
-
   
   </body>
 </html>
