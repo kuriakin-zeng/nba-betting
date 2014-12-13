@@ -37,10 +37,15 @@
       <div class="inner clearfix">
         <section id="main-content">
 <h3>Background</h3>
+<p>All of us in the group are avid sports fans, and we would like to explore the sports betting market to see if it is efficient, or if there is an opportunity to profit from betting in a certain pattern consistently. It’s a market that is oftentimes invisible, but a fascinating one nonetheless. According to ESPN, “more than $3.6 billion was wagered on sports at Nevada sports books in 2013” while estimates for illegal betting tops <strong>$380 billion</strong>. This topic is especially of interest after recent pushes for legalization in the US, which is currently only legal in Nevada and through offshore websites. Recent supporters include Adam Silver, the commissioner of the NBA, calling for the federal legalization of sports betting in the US as a common sense solution given the amount of illicit betting already at play and the potential for sports betting as a budgetary aid. This stands in contrast to similar systems in Europe, where sports betting in legal and volumes are significantly higher than comparable sports in the U.S.</p>
+
+<p>Given the potential of sports betting in the U.S. and our collective interest in the topic, we want to explore the relationship between the structures and incentives of sports betting markets, comparing the efficiency of this market relative to financial markets, and observe where inefficiencies might arise. One piece of research of particular interest to us were the studies of Steven Levitt, who argues in a 2004 paper that bookmakers “do not play the traditional role of market makers matching buyers and sellers but, rather, take large positions with respect to the outcome of game” and bias the odds against favorites. In our project, we want to dive deeper into this hypothesis as well as take a look at what other factors might come into play regarding systematic over/undervaluation in placing odds in the world of sports betting.</p>
+
+<h3>The Problem</h3>
 
 <p>In both NBA and NFL betting, the odds are given in the form of a spread. For instance, when the Los Angeles Lakers plays the Cleveland Cavaliers, the spread from the Lakers’ perspective is the points that they score minus the points that the Cavaliers score. Theoretically, if betting spreads were perfect predictors of the outcome of each game, then we would expect any given team to beat the spread with 50% probability on any given night, and it would be impossible to consistently profit from betting on sports games. However, we wanted to see if we would be able to find a strategy that allows us to pick a team for each game such that the probability that our chosen team wins on any given night is better than 50%.</p>
 
-<p>However, in reality, being better than 50% is not enough because the odds makers take a small commission for every bet. So, how correct do we have to be if we want to profit from sports betting? If the odds maker takes 9% as commission (http://sports.bovada.lv/sports-betting/nba-basketball-lines.jsp), then over the course of n bets, we need be correct with probability p to break even:</p>
+<p>However, in reality, just being better than 50% is not enough because the odds makers take a small commission for every bet. So, how correct do we have to be if we want to profit from sports betting? If the odds maker takes 9% as commission (<a href="http://sports.bovada.lv/sports-betting/nba-basketball-lines.jsp">source</a>), then over the course of <em>n</em> bets, we need be correct with probability <em>p</em> to break even:</p>
 
 <pre>
 p * n * (1.91 * bet-size) = n * bet-size
@@ -51,19 +56,63 @@ p = 52.4 %
 
 <h3>Betting against the favored team.</h3>
 
-<p>Interestingly, a simple strategy of consistency betting against the favored team would be profitable if there was no commission taken. This is consistent with what has been noted in literature already, and indicates that odds makers are taking into account the human tendency to overestimate the spread. People are generally good at predicting which team is going to win. However, once people decide on who is the favorite, they generally tend to overestimate how much the favorite will win by. Therefore, the spread is generally set against the favorite team by the odds makers.</p>
+<p>First, let's look at a simple strategy of betting against the favored team in both the NBA and the NFL.</p>
+
+<div id="nflWPSChart"></div>
 <div id="nbaWPSChart"></div>
-We see that although the simple strategy described above would work in a world where odds makers do not take commission, it is not successful enough (not over 52.4% consistently) to beat a more realistic market. Therefore, we look for another strategy.
+
+<p>In the NFL, this strategy does not seem to be successful at all, which was to be expected. However, we see that in the NBA, this simple strategy of consistency betting against the favored team would be profitable if there was no commission taken. This is consistent with what has been noted in literature already, and indicates that odds makers are taking into account the human tendency to overestimate the spread. People are generally good at predicting which team is going to win. However, once people decide on who is the favorite, they generally tend to overestimate how much the favorite will win by. Therefore, the spread is generally set against the favorite team by the odds makers.</p>
+
+<p>We see that although the simple strategy described above would work in a world where odds makers do not take commission, it is not successful enough (not above 52.4% consistently) to beat a more realistic market. Therefore, we look for another strategy.</p>
 
 <h3>Using random forests</h3>
-<p>We had a theory that the odds makers would set the odds against popular teams. We decided to look at a few characteristics which we thought may provide us information about</p>
+<p>Odds makers do not simply predict the outcome of the games. They also take into account how they expect people will bet. For example, let us say that team A and team B are about to play a game, and analysis based on in-game statistics shows that team A is likely to win by an average margin of 5.5. However, if team A is on a long winning streak, or if team B is on a long losing streak, or if team A is much more popular than team B, then we may expect a greater volume of bets for team A, encouraging the odds makers to set the margin to something more like 8.5 in order to . We decided to look at a few characteristics which we thought may provide us information about this "unreasonableness" in how people bet. The following list includes the features we looked at:</p>
+<ul>
+  <li>Population of city</li>
+  <li>Win streak of favorite team (negative if losing streak)</li>
+  <li>Win streak of underdog (negative if losing streak)</li>
+  <li>ESPN Weekly Power Rankings</li>
+  <li>Ticket Prices</li>
+  <li>Home Attendance </li>
+  <li>Home Attendance/Home Capacity </li>
+  <li>Home Advantage</li>
+  <li>Team Value (how much the team could be sold for)</li>
+</ul>
+
 <div id="nbaBoxPlot2007"></div>
 <div id="nbaBoxPlot2013"></div>
 <div id="nbaStackedPercentPlot"></div>
-<div id="nflWPSChart"></div>
 <div id="nflBoxPlot2008"></div>
 <div id="nflBoxPlot2013"></div>
 
+<h3>Regression Approach</h3>
+
+<p>We initially started off using a linear regression model, team fixed effects (indicator variables for each team), and a logistic regression. We optimized the selection of coefficients according to adjusted R2 and BIC, which take into account both the accuracy of the predictions as well as the number of terms included. We found that in 2013, a simple OLS showed that the relative value of the favorite team to the non-favorite team were significant at the 5% level. Relative value had a negative coefficient of -0.1282. A negative coefficient decreases the probability that WPS=1, which means that the favorite team did not beat the spread. Hence the betting spread is biased against the favorite. This coefficient was also significant when we included team fixed effects but disappeared in the logistic regression. In the logistic model, the only significant variable was the relative population sizes.</p>
+
+<h3>Sources of Data</h3>
+
+<strong>NBA Data Scraping</strong>
+<p>We scraped the odds (point spread) and the actual scores for each NBA match that took place between 1990 and 2015 from covers.com. The dataset has about 60,000 rows and six columns. </p>
+
+<p>We thought that the winning/losing streaks of a team during the season could influence the betting odds, so we wrangled the data to come up with the metric. </p>
+<p>We also hypothesized that metrics such as a team’s performance during the season would results in some bias on the odds, so we scraped the weekly ranking of each NBA team between 2002 and 2014 from espn.go.com. To do that, we needed to find out which week of the year is the start of the NBA season, so we scraped the information from basketball-reference.com, which results in just a 13 rows containing the start date of each season. The ranking data from espn.go.com was given in a JavaScript object format (not JSON), so we had to perform more data wrangling to extract the information we needed. The ranking dataset has 15,000 rows and one column.</p>
+
+<p>NBA attendance data and capacity were obtained from a csv located on the website of Clay Cressler originally used by him to determine what teams were most susceptible to relocation (<a href="http://cressler.weebly.com/blog/nba-contraction-which-teams-should-be-on-the-chopping-block">source</a>).</p>
+
+<p>Population data was downloaded using available census data, using the population of the cities in which our NBA and NFL teams were located or situated near.</p>
+
+<p>NBA and NFL team revenue data were scraped from the Annual Forbes rankings for teams using modified R code originally written by Aragorn Technologies. We manually matched the team names used in these datasets with the team names that we use in our main NBA and NFL dataframes.</p>
+<strong>NFL Data Scraping</strong>
+
+<p>Similarly for NFL, we scraped the odds and actual scores in each match that took place between 1999 and 2015 from covers.com, and calculated each team’s winning streak. The resultant dataset has 5,219 rows and six columns. We also scraped the weekly ranking of each NBA team between 2002 and 2014 from espn.go.com. The ranking dataset has 1,849 rows and one column. We hypothesized that a team’s popularity could also affect the odds, so we scrape the attendance in each match from pro-football-reference.com. This dataset has 2,530 rows and one column.</p>
+
+<strong>Soccer Scraping</strong>
+<p>Soccer data was scraped for our analysis from http://www.football-data.co.uk/, a UK website that consolidates betting data and refers users to betting sites. In total, we scraped data on roughly 25,000 matches played within top leagues in England, France, Germany, Spain, and Italy, including betting odds, home/away distinctions, and final scores. </p>
+<p>Soccer revenue data was scraped from historical data on Statto, which we used as a proxy for betting volume within a specific league</p>
+
+<h3>Transformation of Data</h3>
+
+<p>Team valuations are lagged by 1 year while ESPN Power Rankings are lagged by 1 week. Note that I transform the tricket price, population, value, average home attendance, and percentage attendance data by calculating the relative value between the favorite team and non-favorite team. I achieve this by dividing the favorite team observation by the non-favorite team observation. This is to account for relative differences between teams. This also helps with adjusting for inflation to allow us to draw comparisons between coefficient values among different years.</p>
         </section>
 
         <aside id="sidebar">
