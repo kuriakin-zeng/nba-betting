@@ -104,7 +104,17 @@ p = 52.4 %
 <h3>Regression approach</h3>
 
 <p>We initially started off using a linear regression model, team fixed effects (indicator variables for each team), and a logistic regression. We optimized the selection of coefficients according to adjusted R2 and BIC, which take into account both the accuracy of the predictions as well as the number of terms included. For 2013, using a linear regression showed that the relative value of the favorite team to the non-favorite team was the only variable significant at the 5% level. Relative value had a negative coefficient of -0.1282. A negative coefficient decreases the probability that WPS=1, which means that the favorite team did not beat the spread. Hence the betting spread is biased against the favorite. Nevertheless, our R^2 was only 0.009 or 0.9%. If we choose to bet on the favorite team when the probability is greater than 0.5 and on the non-favorite when the probability is less than 0.5, then we have a 49.00% accuracy rate for 2013. As the mean of WPS is 0.492, this is not a worse model then always betting for the non-favorite team, which would lead us to 50.8% win rate, and betting for the non-favorite team, which would lead us to a 49.2% win rate.</p>
+
 <p>This coefficient was also significant when we included team fixed effects but disappeared in the logistic regression. In the logistic regression, the only significant variable was the relative population sizes. However, the coefficient is not directly interpretable due to the nonlinearity of the model.</p>
+
+<h3>Conclusion</h3>
+
+<p>The variables do not seem to offer any predictive power of the bias. This can be caused by two reasons:</p>
+<ol>
+  <li>The factors are not considered by odds makers and do not affect the final game result</li>
+  <li>The factors affect the game results and the odds makers almost perfectly take them into account It seems more likely that the first is the correct interpretation.</li>
+</ol>
+<p>Our most successful technique was random forests, but we were still not able to beat 52.4 percent. Hence looking forward to beat the odds we may have to use in-game data. This is currently a significant area of exploration (and one currently active in the marchine learning literature) that uses increasing available advanced in game data to try to predict the outcome of games. (<a href="http://www.seas.upenn.edu/~gberta/uploads/3/1/4/8/31486883/">source</a>)</p>
 
 <h3>Sources of data</h3>
 
