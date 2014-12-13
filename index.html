@@ -61,11 +61,12 @@ p = 52.4 %
 <div id="nflWPSChart"></div>
 <div id="nbaWPSChart"></div>
 
-<p>In the NFL, this strategy does not seem to be successful at all, which was to be expected. However, we see that in the NBA, this simple strategy of consistency betting against the favored team would be profitable if there was no commission taken. This is consistent with what has been noted in literature already, and indicates that odds makers are taking into account the human tendency to overestimate the spread. People are generally good at predicting which team is going to win. However, once people decide on who is the favorite, they generally tend to overestimate how much the favorite will win by. Therefore, the spread is generally set against the favorite team by the odds makers.</p>
+<p>In the NFL, this strategy does not seem to be successful at all, which was to be expected. However, we see that in the NBA, this simple strategy of consistency betting against the favored team would be profitable if there was no commission taken. This is consistent with what has been noted in literature already. Research by Simmons and Nelson (2006) show that people often choose intuitively between two alternatives. “When people decide how to bet on a game, first they identify who is going to win,” Nelson said. That decision is often fast and easy, particularly when teams are not evenly matched. “The faster and easier it is, the less concerned they are with correcting that intuition when answering the more difficult question of whether the favorite is going to beat the point spread.”</p>
 
 <p>We see that although the simple strategy described above would work in a world where odds makers do not take commission, it is not successful enough (not above 52.4% consistently) to beat a more realistic market. Therefore, we look for another strategy.</p>
 
-<h3>Using random forests</h3>
+<h3>Variables that may cause systematic biases</h3>
+
 <p>Odds makers do not simply predict the outcome of the games. They also take into account how they expect people will bet. For example, let us say that team A and team B are about to play a game, and analysis based on in-game statistics shows that team A is likely to win by an average margin of 5.5. However, if team A is on a long winning streak, or if team B is on a long losing streak, or if team A is much more popular than team B, then we may expect a greater volume of bets for team A, encouraging the odds makers to set the margin to something more like 8.5 in order to . We decided to look at a few characteristics which we thought may provide us information about this "unreasonableness" in how people bet. The following list includes the features we looked at:</p>
 <ul>
   <li>Population of city</li>
@@ -79,17 +80,19 @@ p = 52.4 %
   <li>Team Value (how much the team could be sold for)</li>
 </ul>
 
+<h3>Using random forests</h3>
+<p>Using the features listed above, we constructed random forests to help predict the outcomes of both NBA and NFL games. Below are the win percentages of the picks made by the random forests using 10-Fold Cross-Validation.</p>
 <div id="nbaBoxPlot2007"></div>
 <div id="nbaBoxPlot2013"></div>
 <div id="nbaStackedPercentPlot"></div>
 <div id="nflBoxPlot2008"></div>
 <div id="nflBoxPlot2013"></div>
 
-<h3>Regression Approach</h3>
+<h3>Regression approach</h3>
 
 <p>We initially started off using a linear regression model, team fixed effects (indicator variables for each team), and a logistic regression. We optimized the selection of coefficients according to adjusted R2 and BIC, which take into account both the accuracy of the predictions as well as the number of terms included. We found that in 2013, a simple OLS showed that the relative value of the favorite team to the non-favorite team were significant at the 5% level. Relative value had a negative coefficient of -0.1282. A negative coefficient decreases the probability that WPS=1, which means that the favorite team did not beat the spread. Hence the betting spread is biased against the favorite. This coefficient was also significant when we included team fixed effects but disappeared in the logistic regression. In the logistic model, the only significant variable was the relative population sizes.</p>
 
-<h3>Sources of Data</h3>
+<h3>Sources of data</h3>
 
 <strong>NBA Data Scraping</strong>
 <p>We scraped the odds (point spread) and the actual scores for each NBA match that took place between 1990 and 2015 from covers.com. The dataset has about 60,000 rows and six columns. </p>
