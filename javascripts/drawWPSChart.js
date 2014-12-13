@@ -20,12 +20,12 @@ function drawWPSChart(id, title, years, data, errorData) {
         }
       },
       plotLines: [{
-        value: 0.5,
+        value: 50,
         color: 'red',
         width: 2,
       }],
       title: {
-        text: 'Score',
+        text: 'Percent',
         style: {
           color: Highcharts.getOptions().colors[1]
         }
@@ -36,18 +36,18 @@ function drawWPSChart(id, title, years, data, errorData) {
     },
 
     series: [{
-      name: 'Score',
+      name: 'Percent',
       type: 'spline',
       data: data,
       tooltip: {
-        pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.3f}°C</b> '
+        pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.2f}</b> '
       }
     }, {
         name: 'Score error',
         type: 'errorbar',
         data: errorData,
         tooltip: {
-          pointFormat: '(error range: {point.low:.3f}-{point.high:.3f}°C)<br/>'
+          pointFormat: '(error range: {point.low:.2f}-{point.high:.2f})<br/>'
         }
     }]
   });

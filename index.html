@@ -38,21 +38,28 @@
         <section id="main-content">
 <h3>Background</h3>
 
-<p>All of us in the group are avid sports fans, and we would like to explore the sports betting market to see if it is efficient, or if there is an opportunity to profit from betting in a certain pattern consistently. It’s a market that is oftentimes invisible, but a fascinating one nonetheless. According to ESPN, “more than $3.6 billion was wagered on sports at Nevada sports books in 2013” while estimates for illegal betting tops $380 billion. This topic is especially of interest after recent pushes for legalization in the US, which is currently only legal in Nevada and through offshore websites. Recent supporters include Adam Silver, the commissioner of the NBA, calling for the federal legalization of sports betting in the US as a common sense solution given the amount of illicit betting already at play and the potential for sports betting as a budgetary aid. This stands in contrast to similar systems in Europe, where sports betting in legal and volumes are significantly higher than comparable sports in the U.S.</p>
+<p>In both NBA and NFL betting, the odds are given in the form of a spread. For instance, when the Los Angeles Lakers plays the Cleveland Cavaliers, the spread from the Lakers’ perspective is the points that they score minus the points that the Cavaliers score. Theoretically, if betting spreads were perfect predictors of the outcome of each game, then we would expect any given team to beat the spread with 50% probability on any given night, and it would be impossible to consistently profit from betting on sports games. However, we wanted to see if we would be able to find a strategy that allows us to pick a team for each game such that the probability that our chosen team wins on any given night is better than 50%.</p>
 
-<p>Given the potential of sports betting in the U.S. and our collective interest in the topic, we want to explore the relationship between the structures and incentives of sports betting markets, comparing the efficiency of this market relative to financial markets, and observe where inefficiencies might arise. One piece of research of particular interest to us were the studies of Steven Levitt, who argues in a 2004 paper that bookmakers “do not play the traditional role of market makers matching buyers and sellers but, rather, take large positions with respect to the outcome of game” and bias the odds against favorites. In our project, we want to dive deeper into this hypothesis as well as take a look at what other factors might come into play regarding systematic over/undervaluation in placing odds in the world of sports betting.</p>
+<p>However, in reality, being better than 50% is not enough because the odds makers take a small commission for every bet. So, how correct do we have to be if we want to profit from sports betting? If the odds maker takes 9% as commission (http://sports.bovada.lv/sports-betting/nba-basketball-lines.jsp), then over the course of n bets, we need be correct with probability p to break even:</p>
 
+<pre>
+p * n * (1.91 * bet-size) = n * bet-size
+p = 52.4 %
+</pre>
+
+<p>Therefore, in order for us to profit from sports betting, we need to win at least 52.4% of the time.</p>
+
+<h3>Betting against the favored team.</h3>
+
+<p>Interestingly, a simple strategy of consistency betting against the favored team would be profitable if there was no commission taken. This is consistent with what has been noted in literature already, and indicates that odds makers are taking into account the human tendency to overestimate the spread. People are generally good at predicting which team is going to win. However, once people decide on who is the favorite, they generally tend to overestimate how much the favorite will win by. Therefore, the spread is generally set against the favorite team by the odds makers.</p>
 <div id="nbaWPSChart"></div>
+We see that although the simple strategy described above would work in a world where odds makers do not take commission, but it is not successful enough (not over 52.4% consistently) to beat a more realistic market. Therefore, we look for another strategy.
 
-
-<p>As seen above, I show the means of the binary indicator, WPS, by year. For each game, WPS indicates whether the actual spread from the favorite's perspective beat the predicted spread. The bars represent the 95% confidence interval assuming a Student's t-distribution. As the number of observations is very large each year (with over 1200 total matches in the regular season), then by the central limit theorem the means should be normally distributed, allowing us to use the Student's t-distribution.</p>
-<p>As seen, the mean of WPS for each year is not statistically significant from 0.5 for most of the years between 2000 to 2013. This suggests that betting odds are good predictors of the actual result as 50% of the time the spread is greater then predicted and 50% of the time it is less.</p>
-<p>Interestingly, the mean values of WPS before 2011 seem to be below the 50% mark, suggesting that betting odds odds are biased against the favorites. In other words, they underpredict the probably of the favorite winning. This makes sense and is consistent with the literature (http://fivethirtyeight.com/features/why-people-bet-on-the-favorite-even-when-the-spread-favors-the-underdog/). There is a tendency for people to place their bets on the favorite team (perhaps for psychological reasons), which means that the gambling companies can increase the point spread, making it harder for the favorite to beat and thus shifting the odds slightly to favor the underdog. Nevertheless, the results are not statistically significance at the 10% level except for in the years 1994, 2006, and 2010.</p>
-
+<h3>Using random forests</h3>
+<p>We had a theory that the odds makers would set the odds against popular teams. We decided to look at a few characteristics which we thought may provide us information about</p>
 <div id="nbaBoxPlot2007"></div>
 <div id="nbaBoxPlot2013"></div>
 <div id="nbaStackedPercentPlot"></div>
-
 <div id="nflWPSChart"></div>
 <div id="nflBoxPlot2008"></div>
 <div id="nflBoxPlot2013"></div>
