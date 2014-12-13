@@ -1,4 +1,4 @@
-function drawBoxPlot(id, title, data) {
+function drawBoxPlot(id, title, data, min, max) {
   $(id).highcharts({
     chart: {
         type: 'boxplot'
@@ -24,8 +24,8 @@ function drawBoxPlot(id, title, data) {
           color: 'red',
           width: 2,
         }],
-        min: 40,
-        max: 75
+        min: min,
+        max: max
     },
     series: [{
       name: 'Observations',
