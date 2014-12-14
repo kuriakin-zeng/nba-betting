@@ -18,7 +18,7 @@ function drawLineGraph(id, title, years, data) {
             }]
         },
         tooltip: {
-            valueSuffix: '°C'
+            valueSuffix: 'percent'
         },
         legend: {
             title: {
